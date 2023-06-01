@@ -3,6 +3,7 @@
 #
 #	Version:
 #		2023-05-03:	Erstellt.
+#		2023-06-01: [Hinzu] Pipeline Integer Konversion in der Bestimmmung des maximalen Bildindex
 #	Original:
 #		
 #	Verweise:
@@ -1903,7 +1904,7 @@ if ($private:folderBrowserDialog.ShowDialog() -eq 'OK') {
 		. 'C:\Program Files\7-Zip\7z.exe' x -y $local:slideshow "ppt\slides\slide1.xml" |  Write-Verbose
 		. 'C:\Program Files\7-Zip\7z.exe' x -y $local:slideshow "ppt\slides\_rels\slide1.xml.rels" |  Write-Verbose
 		#
-		[Int] $local:imgOff = [Int]$($($(. 'C:\Program Files\7-Zip\7z.exe' l -y $local:slideshow) -match "ppt\\media") -replace ".*ppt\\media\\image([1-9][0-9]*)\.[A-Za-z]{3,4}",'$1' | Sort-Object | Select-Object -Last 1) + 1
+		[Int] $local:imgOff = [Int]$($($(. 'C:\Program Files\7-Zip\7z.exe' l -y $local:slideshow) -match "ppt\\media") -replace ".*ppt\\media\\image([1-9][0-9]*)\.[A-Za-z]{3,4}",'$1' | ForEach-Object -Process { [Int]$_} | Sort-Object | Select-Object -Last 1) + 1
 		#
         [Int] $local:relOff = ($([Xml]$(Get-Content "$DataDir\ppt\slides\_rels\slide1.xml.rels")).Relationships.Relationship.Id -replace '^rId([1-9][0-9]?)','$1' | ForEach-Object -Process { [Int]$_} | Sort-Object | Select-Object -Last 1) + 1
         #
