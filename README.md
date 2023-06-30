@@ -1,5 +1,5 @@
 # xslt
-How to use
+How to use:
 
 - Choose a strict open xml presentation in the dimensions 16x9 to modify or adapt the file "Empty Slide 16x9 Strict OOXML.pptx" with any images, text, etc. to your liking
 - Save the data you wish to add as a csv file in the format shown in the file "Data.xlsx" (including names of pictures)
