@@ -4,6 +4,7 @@
 #	Version:
 #		2023-05-03:	Erstellt.
 #		2023-06-01: [Hinzu] Pipeline Integer Konversion in der Bestimmmung des maximalen Bildindex
+#		2023-11-29: [Anders] Objecte aus XML konvertiertem CSV ohne Indexzugriff und Test auf Array in Fortschritt
 #	Original:
 #		
 #	Verweise:
@@ -1921,9 +1922,9 @@ if ($private:folderBrowserDialog.ShowDialog() -eq 'OK') {
 			#
             [Int] $local:column = -1
             #
-            foreach($pos in 0..$($tagData.Objects.Object[1].Property.Length - 1)) {
+            foreach($pos in 0..$($tagData.Objects.Object.Property.Length - 1)) {
                 #
-                if($tagData.Objects.Object[1].Property[$pos].Name -eq 'image') {
+                if($tagData.Objects.Object.Property[$pos].Name -eq 'image') {
                     #
                     $local:column = $pos
                     #
@@ -1940,7 +1941,11 @@ if ($private:folderBrowserDialog.ShowDialog() -eq 'OK') {
 				#
 				foreach($item in $local:tagData.Objects.Object) {
 					#
-					Write-Progress -Id  345 -Activity "Rescaling images ..." -PercentComplete $([int]($local:count++ / $local:tagData.Objects.Object.Length * 100))
+					if ($local:tagData.Objects.Object -gt 0) {
+     						#
+	   					Write-Progress -Id  345 -Activity "Rescaling images ..." -PercentComplete $([int]($local:count++ / $local:tagData.Objects.Object.Length * 100))
+	 					#
+       					}
 					#
 					. local:scaleImage -decoInFile "$private:folder\$($item.Property[$private:column].'#text')" -decoOutFile "$DataDir\ppt\media\image$local:imgIdx.jpeg"
 					#
